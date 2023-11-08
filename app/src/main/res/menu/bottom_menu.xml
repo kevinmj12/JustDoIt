@@ -3,16 +3,18 @@
 
     <item
         android:id="@+id/todoList"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/icons_todolist"
         android:enabled="true"
         android:title="To-Do"/>
     <item
         android:id="@+id/dailyTodoCalendar"
+        android:icon="@drawable/icons_calendar"
         android:enabled="true"
-        android:title="Claendar"/>
+        android:title="Calendar"/>
 
     <item
         android:id="@+id/userSetting"
+        android:icon="@drawable/icons_setting"
         android:enabled="true"
         android:title="Setting"/>
 
