@@ -30,21 +30,21 @@ public class MainActivity extends AppCompatActivity {
         // BottomNavigationView 설정
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
         // 처음 실행 시 To-Do List 화면 출력
-        getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameLayout, todoListFragment).commit();
+        getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, todoListFragment).commit();
         // BottomNavigationView의 각 버튼 클릭 시 화면 전환
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == R.id.todoList){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameLayout, todoListFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, todoListFragment).commit();
                     return true;
                 }
                 else if (item.getItemId() == R.id.dailyTodoCalendar){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameLayout, dailyTodoCalendarFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dailyTodoCalendarFragment).commit();
                     return true;
                 }
                 else if (item.getItemId() == R.id.userSetting){
-                    getSupportFragmentManager().beginTransaction().replace(R.id.mainFrameLayout, settingFragment).commit();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, settingFragment).commit();
                     return true;
                 }
                 else{
