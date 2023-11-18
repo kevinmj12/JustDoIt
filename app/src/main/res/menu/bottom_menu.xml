@@ -7,6 +7,11 @@
         android:enabled="true"
         android:title="To-Do"/>
     <item
+        android:id="@+id/dailyTodoList"
+        android:icon="@drawable/icons_daily_todolist"
+        android:enabled="true"
+        android:title="Daily To-Do"/>
+    <item
         android:id="@+id/dailyTodoCalendar"
         android:icon="@drawable/icons_calendar"
         android:enabled="true"
