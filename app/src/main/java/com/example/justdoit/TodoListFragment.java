@@ -3,6 +3,7 @@ package com.example.justdoit;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -47,6 +48,10 @@ public class TodoListFragment extends Fragment {
         todoRecyclerView = v.findViewById(R.id.todoRecyclerView);
         todoRecyclerView.setLayoutManager(linearLayoutManager);
 
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(todoRecyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        todoRecyclerView.addItemDecoration(dividerItemDecoration);
+
         todoRecyclerAdapter = new RecyclerAdapter(todoArrayList, getContext());
         todoRecyclerView.setAdapter(todoRecyclerAdapter);
 
@@ -57,17 +62,17 @@ public class TodoListFragment extends Fragment {
         todoRecyclerAdapter.notifyDataSetChanged();
 
 
-        dailyTodoRecyclerView = v.findViewById(R.id.dailyTodoRecyclerView);
-        dailyTodoRecyclerView.setLayoutManager(linearLayoutManager2);
+//        dailyTodoRecyclerView = v.findViewById(R.id.dailyTodoRecyclerView);
+//        dailyTodoRecyclerView.setLayoutManager(linearLayoutManager2);
 //
-        dailyTodoRecyclerAdapter = new RecyclerAdapter(dailyTodoArrayList, getContext());
-        dailyTodoRecyclerView.setAdapter(dailyTodoRecyclerAdapter);
-
-        dailyTodoRecyclerAdapter.addItem(todo1);
-        dailyTodoRecyclerAdapter.addItem(todo2);
-        dailyTodoRecyclerAdapter.addItem(todo3);
-        dailyTodoRecyclerAdapter.addItem(todo4);
-        dailyTodoRecyclerAdapter.notifyDataSetChanged();
+//        dailyTodoRecyclerAdapter = new RecyclerAdapter(dailyTodoArrayList, getContext());
+//        dailyTodoRecyclerView.setAdapter(dailyTodoRecyclerAdapter);
+//
+//        dailyTodoRecyclerAdapter.addItem(todo1);
+//        dailyTodoRecyclerAdapter.addItem(todo2);
+//        dailyTodoRecyclerAdapter.addItem(todo3);
+//        dailyTodoRecyclerAdapter.addItem(todo4);
+//        dailyTodoRecyclerAdapter.notifyDataSetChanged();
 
 
 

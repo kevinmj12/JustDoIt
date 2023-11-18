@@ -8,11 +8,34 @@
     tools:context=".MainActivity">
 
     <RelativeLayout
+        android:id="@+id/appBar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="10dp"
+        >
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Just Do It"
+            android:textSize="50dp"/>
+        <ImageButton
+            android:id="@+id/createTodo"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_marginRight="10dp"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@drawable/icons_create_todo"
+            android:background="@android:color/transparent"/>
+    </RelativeLayout>
+
+    <RelativeLayout
         android:id="@+id/mainLayout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@id/bottomNavigationView"
-        >
+        android:layout_below="@id/appBar"
+        android:layout_above="@id/bottomNavigationView">
     </RelativeLayout>
 
 
