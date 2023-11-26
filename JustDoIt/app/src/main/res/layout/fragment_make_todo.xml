@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:layout_width="409dp"
+        android:layout_height="729dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="1dp"
+        tools:layout_editor_absoluteY="1dp"
+        tools:ignore="MissingConstraints">
+
+        <Button
+            android:id="@+id/MakeTodoBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Back" />
+
+        <TextView
+            android:id="@+id/TaskNameView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/task_name"
+            android:textSize="35sp"/>
+
+        <EditText
+            android:id="@+id/MakeTodoName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="text"
+            android:text="@string/name"
+            android:textSize="30sp"/>
+
+        <TextView
+            android:id="@+id/DateTimeView"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date_time"
+            android:textSize="35sp"/>
+
+        <Button
+            android:id="@+id/DateTime"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/date" />
+
+        <Switch
+            android:id="@+id/MakeTodoIsDailyTodo"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/daily"
+            android:textSize="35sp"
+            tools:ignore="UseSwitchCompatOrMaterialXml" />
+
+        <Button
+            android:id="@+id/MakeTodoDone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Done" />
+
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

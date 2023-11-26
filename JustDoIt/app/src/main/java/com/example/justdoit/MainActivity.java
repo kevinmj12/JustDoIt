@@ -19,6 +19,7 @@ public class MainActivity extends AppCompatActivity {
     Fragment dailyTodoListFragment;
     Fragment dailyTodoCalendarFragment;
     Fragment settingFragment;
+    Fragment makeTodoFragment;
 
     ImageButton createTodo;
 
@@ -27,11 +28,12 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // Fregment 생성
+        // Fragment 생성
         todoListFragment = new TodoListFragment();
         dailyTodoListFragment = new DailyTodoListFragment();
         dailyTodoCalendarFragment = new DailyTodoCalendarFragment();
         settingFragment = new SettingFragment();
+        makeTodoFragment = new MakeTodoFragment();
 
         // BottomNavigationView 설정
         bottomNavigationView = findViewById(R.id.bottomNavigationView);
@@ -44,29 +46,33 @@ public class MainActivity extends AppCompatActivity {
         bottomNavigationView.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if (item.getItemId() == R.id.todoList){
+                if (item.getItemId() == R.id.todoList) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, todoListFragment).commit();
                     activateImageButton(createTodo, true);
                     return true;
-                }
-                else if (item.getItemId() == R.id.dailyTodoList){
+                } else if (item.getItemId() == R.id.dailyTodoList) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dailyTodoListFragment).commit();
                     activateImageButton(createTodo, true);
                     return true;
-                }
-                else if (item.getItemId() == R.id.dailyTodoCalendar){
+                } else if (item.getItemId() == R.id.dailyTodoCalendar) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, dailyTodoCalendarFragment).commit();
                     activateImageButton(createTodo, false);
                     return true;
-                }
-                else if (item.getItemId() == R.id.userSetting){
+                } else if (item.getItemId() == R.id.userSetting) {
                     getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, settingFragment).commit();
                     activateImageButton(createTodo, false);
                     return true;
-                }
-                else{
+                } else {
                     return false;
                 }
+            }
+        });
+
+        // To-Do 추가 버튼 클릭 시 화면 전환
+        createTodo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, makeTodoFragment).commit();
             }
         });
     }
