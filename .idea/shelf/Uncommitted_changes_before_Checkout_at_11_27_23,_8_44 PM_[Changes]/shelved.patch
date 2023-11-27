@@ -1,0 +1,24 @@
+Index: JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//fragment_make_todo.xml\n//add todo to todo list\npackage com.example.justdoit;\n\nimport android.app.DatePickerDialog;\nimport android.app.Dialog;\nimport android.content.Intent;\nimport android.os.Bundle;\n\nimport androidx.annotation.Nullable;\nimport androidx.fragment.app.DialogFragment;\nimport androidx.fragment.app.Fragment;\n\nimport android.view.LayoutInflater;\nimport android.view.View;\nimport android.view.ViewGroup;\nimport android.widget.Button;\nimport android.widget.DatePicker;\nimport android.widget.EditText;\nimport android.widget.ImageButton;\nimport android.widget.Switch;\nimport android.widget.TextView;\n\nimport java.util.Calendar;\n\npublic class MakeTodoFragment extends Fragment {\n\n    ImageButton createTodo;\n\n    @Override\n    public void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n    }\n    @Override\n    public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {\n        View v = inflater.inflate(R.layout.fragment_make_todo, container, false);\n        //MakeTodoBack버튼 클릭 시 전 페이지로 이동\n        v.findViewById(R.id.MakeTodoBack).setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                Intent intent = new Intent(getActivity(), MainActivity.class);\n                getActivity().startActivity(intent);\n            }\n        });\n        //MakeTodoDone버튼 클릭 시 name, deadlineMonth, deadlineDate, totalProgress, presentProgress, isDailyTodo를 입력받아 TodoListFragment로 전달\n        v.findViewById(R.id.MakeTodoDone).setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                EditText name = (EditText) v.findViewById(R.id.MakeTodoName);\n\n                //DatePickerFragment에서 받아온 deadlineMonth, deadlineDate 저장\n            }\n        });\n        //DatePicker 클릭 시 DatePickerFragment로 이동\n        v.findViewById(R.id.DateTime).setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                DialogFragment newFragment = new DatePickerFragment();\n                newFragment.show(getFragmentManager(), \"datePicker\");\n            }\n        });\n        return v;\n\n    }\n}\n\n
+===================================================================
+diff --git a/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java b/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java
+--- a/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java	
++++ b/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java	
+@@ -42,13 +42,12 @@
+                 getActivity().startActivity(intent);
+             }
+         });
+-        //MakeTodoDone버튼 클릭 시 name, deadlineMonth, deadlineDate, totalProgress, presentProgress, isDailyTodo를 입력받아 TodoListFragment로 전달
++        //MakeTodoDone버튼 클릭 시 ToDo 정보 전달
+         v.findViewById(R.id.MakeTodoDone).setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+                 EditText name = (EditText) v.findViewById(R.id.MakeTodoName);
+-
+-                //DatePickerFragment에서 받아온 deadlineMonth, deadlineDate 저장
++                //
+             }
+         });
+         //DatePicker 클릭 시 DatePickerFragment로 이동
