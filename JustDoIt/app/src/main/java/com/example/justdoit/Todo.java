@@ -57,7 +57,7 @@ public class Todo {
         this.presentProgress = presentProgress;
     }
     public int getPercentProgress(){
-        return (presentProgress / presentProgress);
+        return (presentProgress / totalProgress);
     }
 
     public boolean isDailyTodo() {

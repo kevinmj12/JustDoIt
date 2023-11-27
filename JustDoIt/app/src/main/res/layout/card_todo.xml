@@ -15,7 +15,7 @@
         >
 
         <TextView
-            android:id="@+id/item_name"
+            android:id="@+id/todo_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="소아키 프로젝트"
@@ -37,6 +37,7 @@
                     android:textSize="20dp"/>
 
                 <TextView
+                    android:id="@+id/todo_deadline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="11월 20일"
@@ -54,6 +55,7 @@
                     android:textSize="20dp"/>
 
                 <TextView
+                    android:id="@+id/todo_progress"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="50%"
