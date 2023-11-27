@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment;
 import com.example.justdoit.Retrofit.RetrofitAPI;
 import com.example.justdoit.Retrofit.RetrofitClient;
 import com.example.justdoit.Retrofit.TestModel;
+import com.example.justdoit.Retrofit.TodoModel;
 
 import java.util.List;
 
@@ -39,18 +40,18 @@ public class DailyTodoListFragment extends Fragment {
 
         testTextView = v.findViewById(R.id.testTextView1);
 
-        Call<List<TestModel>> call = RetrofitClient.getApiService().getData("1");
-        call.enqueue(new Callback<List<TestModel>>() {
+        Call<List<TodoModel>> call = RetrofitClient.getApiService().getTodo(1);
+        call.enqueue(new Callback<List<TodoModel>>() {
             @Override
-            public void onResponse(Call<List<TestModel>> call, Response<List<TestModel>> response) {
+            public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
                 if (response.isSuccessful()){
-                    List<TestModel> data = response.body();
-                    testTextView.setText(data.get(0).getTitle());
+                    List<TodoModel> data = response.body();
+                    testTextView.setText(data.get(0).getTodoName());
                 }
             }
 
             @Override
-            public void onFailure(Call<List<TestModel>> call, Throwable t) {
+            public void onFailure(Call<List<TodoModel>> call, Throwable t) {
                 Log.d("error", t.getMessage());
             }
         });

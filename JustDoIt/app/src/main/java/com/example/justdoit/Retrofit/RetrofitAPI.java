@@ -11,12 +11,13 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
+import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface RetrofitAPI {
-    @GET("/posts")
-    Call<List<TestModel>> getData(
-            @Query("uesrId") String id
+    @GET("/todo/{user_id}")
+    Call<List<TodoModel>> getTodo(
+            @Path("user_id") int user_id
     );
 
     @FormUrlEncoded
