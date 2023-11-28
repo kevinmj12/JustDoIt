@@ -1,13 +1,13 @@
 // server
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3123;
 var mysql = require("mysql");
 
 var db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "jacob9897!",
+    password: "PASSWORD", // 개인 MySQL 비밀번호 입력할 것
     database: "justdoit",
     port: "3306",
 })
@@ -15,7 +15,7 @@ var db = mysql.createConnection({
 db.connect();
 
 app.get('/', function(req, res){
-    res.send("Test");
+    res.send("JustDoIt");
 });
 
 
@@ -43,6 +43,7 @@ app.get("/dailytodo/:user_id", (req, res) =>{
     })
 })
 
+
 app.listen(port, () => {
-    console.log("Connected at 3000");
+    console.log(`Connected at ${port}`);
 });
