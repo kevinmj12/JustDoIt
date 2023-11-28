@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -21,7 +22,9 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
 
     private CardView cardTodo;
     ArrayList<Todo> TodoArray = new ArrayList<>();
-
+    TextView todoName;
+    TextView todoDeadline;
+    TextView todoProgress;
     String userId;
     //    Context context;
     Context context;
@@ -34,9 +37,15 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             super(view);
             // Define click listener for the ViewHolder's View
             cardTodo = view.findViewById(R.id.card_todo);
+            todoName = view.findViewById(R.id.todo_name);
+            todoDeadline = view.findViewById(R.id.todo_deadline);
+            todoProgress = view.findViewById(R.id.todo_progress);
         }
 
-        void onBind(Todo crowdData){
+        void onBind(Todo todo){
+            todoName.setText(todo.getName());
+            todoDeadline.setText(Integer.toString(todo.getDeadlineMonth())+"월 "+ Integer.toString(todo.getDeadlineDate())+"일");
+            todoProgress.setText(Integer.toString(todo.getPercentProgress())+"%");
 //            image.setImageResource(crowdData.getImage());
 //            textviewName.setText(crowdData.getName());
 //            textviewIntroduction.setText(crowdData.getIntroduction());
