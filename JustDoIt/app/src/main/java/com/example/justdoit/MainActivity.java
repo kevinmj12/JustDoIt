@@ -4,10 +4,13 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageButton;
+import android.widget.PopupMenu;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
@@ -75,6 +78,22 @@ public class MainActivity extends AppCompatActivity {
                 getSupportFragmentManager().beginTransaction().replace(R.id.mainLayout, makeTodoFragment).commit();
             }
         });
+        //card_todo.xml에 있는 pop_up_menu 이미지버튼 클릭시 팝업 메뉴 띄우기
+        /*ImageButton pop_up_menu = findViewById(R.id.pop_up_menu);
+        pop_up_menu.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PopupMenu popupMenu = new PopupMenu(getApplicationContext(),v);
+                popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+                    @Override
+                    public boolean onMenuItemClick(MenuItem item){
+                        return false;
+                    }
+                });
+                popupMenu.inflate(R.menu.popup_menu);
+                popupMenu.show();
+            }
+        });*/
     }
 
     // 이미지버튼을 활성화하거나 비활성화하는 함수

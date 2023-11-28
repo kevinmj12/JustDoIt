@@ -4,6 +4,7 @@
     <option name="autoReloadType" value="NONE" />
   </component>
   <component name="ChangeListManager">
+<<<<<<< HEAD
     <list default="true" id="4ec2614d-bfd2-4ccc-ac73-9b0c7cfce241" name="Changes" comment="kebab menu 추가">
       <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]/shelved.patch" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1/shelved.patch" afterDir="false" />
@@ -13,6 +14,9 @@
       <change afterPath="$PROJECT_DIR$/JustDoIt/app/src/main/res/drawable/pngwing_com.xml" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/JustDoIt/app/src/main/res/drawable/pngwing_com_2.png" afterDir="false" />
     </list>
+=======
+    <list default="true" id="8f0649d7-5b5b-413c-a8f0-363ad8864b8f" name="Changes" comment="" />
+>>>>>>> origin/main
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -56,6 +60,7 @@
       </state>
     </system>
   </component>
+<<<<<<< HEAD
   <component name="Git.Merge.Settings">
     <option name="BRANCH" value="main" />
   </component>
@@ -71,6 +76,16 @@
     <option name="stateVersion" value="1" />
   </component>
   <component name="ProjectId" id="2Yl1g2J2j1yIpFpMikFSfrCkttM" />
+=======
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+    <option name="UPDATE_TYPE" value="REBASE" />
+  </component>
+  <component name="ProjectId" id="2YT99WSpgzp5qUU6fg6eeZJwczp" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="1" id="Add" />
+  </component>
+>>>>>>> origin/main
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
@@ -80,6 +95,7 @@
     &quot;RunOnceActivity.OpenProjectViewOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
     &quot;RunOnceActivity.cidr.known.project.marker&quot;: &quot;true&quot;,
+<<<<<<< HEAD
     &quot;cidr.known.project.marker&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;/Users/leehyunjoon/AndroidStudioProjects/JustDoIt&quot;
   }
@@ -159,6 +175,20 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1701085459267</updated>
+=======
+    &quot;android.gradle.sync.needed&quot;: &quot;true&quot;,
+    &quot;cidr.known.project.marker&quot;: &quot;true&quot;
+  }
+}</component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8f0649d7-5b5b-413c-a8f0-363ad8864b8f" name="Changes" comment="" />
+      <created>1700538550860</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1700538550860</updated>
+>>>>>>> origin/main
     </task>
     <servers />
   </component>
@@ -167,13 +197,32 @@
       <map>
         <entry key="MAIN">
           <value>
+<<<<<<< HEAD
             <State />
+=======
+            <State>
+              <option name="FILTERS">
+                <map>
+                  <entry key="branch">
+                    <value>
+                      <list>
+                        <option value="main" />
+                      </list>
+                    </value>
+                  </entry>
+                </map>
+              </option>
+            </State>
+>>>>>>> origin/main
           </value>
         </entry>
       </map>
     </option>
   </component>
+<<<<<<< HEAD
   <component name="VcsManagerConfiguration">
     <option name="LAST_COMMIT_MESSAGE" value="" />
   </component>
+=======
+>>>>>>> origin/main
 </project>
