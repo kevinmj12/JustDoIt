@@ -88,9 +88,9 @@ public class TodoListFragment extends Fragment {
                 Log.d("error", t.getMessage());
             }
         });
-//        Todo todo1 = new Todo(0, "!", 3, 4, 0, 50, false);
-//        todoRecyclerAdapter.addItem(todo1);
-//        todoRecyclerAdapter.notifyDataSetChanged();
+        //Todo todo1 = new Todo(0, "!", 3, 4, 100, 50, false);
+        //todoRecyclerAdapter.addItem(todo1);
+        //todoRecyclerAdapter.notifyDataSetChanged();
 
         return v;
     }
