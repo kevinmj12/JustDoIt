@@ -1,13 +1,13 @@
 // server
 const express = require('express');
 const app = express();
-const port = 3000;
+const port = 3123;
 var mysql = require("mysql");
 
 var db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "jacob9897!",
+    password: "PASSWORD", // 개인 MySQL 비밀번호 입력할 것
     database: "justdoit",
     port: "3306",
 })
@@ -15,12 +15,12 @@ var db = mysql.createConnection({
 db.connect();
 
 app.get('/', function(req, res){
-    res.send("Test");
+    res.send("JustDoIt");
 });
 
 
-// 유저별 To-DO 리턴
-app.get("/todo/:user_id", (req, res) =>{
+// ?��???�? To-DO 리턴
+app.get("/todo/1", (req, res) =>{
     db.query(`SELECT * FROM todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
             console.log("error");
@@ -29,9 +29,20 @@ app.get("/todo/:user_id", (req, res) =>{
         console.log(result);
         res.json(result);
     })
-})
+    res.json({
+        "todo": [
+            {
+                "todo_id": 1,
+                "user_id": 1,
+                "todo_name": "?��?��?��",
+                "todo_date": "2020-11-11",
+                "todo_time": "12:00",
+                "todo_memo": "?��?��?��?�� ?��?��?��?��?�� ?��?��",
+                "todo_status": 0
+            }]
+});})
 
-// 유저별 Daily To-DO 리턴
+// ?��???�? Daily To-DO 리턴
 app.get("/dailytodo/:user_id", (req, res) =>{
     db.query(`SELECT * FROM daily_todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
@@ -43,6 +54,7 @@ app.get("/dailytodo/:user_id", (req, res) =>{
     })
 })
 
+
 app.listen(port, () => {
-    console.log("Connected at 3000");
+    console.log(`Connected at ${port}`);
 });
