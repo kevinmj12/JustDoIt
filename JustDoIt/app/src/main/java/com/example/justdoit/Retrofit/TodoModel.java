@@ -16,10 +16,6 @@ public class TodoModel {
     @Expose
     private int present_progress;
 
-    @SerializedName("total_progress")
-    @Expose
-    private int total_progress;
-
     @SerializedName("deadline")
     @Expose
     private String deadline;
@@ -34,8 +30,6 @@ public class TodoModel {
     }
 
     public int getPresentProgress(){ return present_progress; }
-
-    public int getTotalProgress(){ return total_progress; }
 
     public String getDeadline(){ return deadline; }
 }

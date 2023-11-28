@@ -71,11 +71,10 @@ public class TodoListFragment extends Fragment {
                         int todoID = data.get(i).getUserId();
                         String todoName = data.get(i).getTodoName();
                         int presentProgress = data.get(i).getPresentProgress();
-                        int totalProgress = data.get(i).getTotalProgress();
                         String getDeadline = data.get(i).getDeadline();
                         int deadlineMonth = Integer.parseInt(getDeadline.substring(5,7));
                         int deadlineDate = Integer.parseInt(getDeadline.substring(8,10));
-                        Todo todo = new Todo(0, todoName, deadlineMonth, deadlineDate, totalProgress, presentProgress, false);
+                        Todo todo = new Todo(0, todoName, deadlineMonth, deadlineDate, 100, presentProgress, false);
 
                         todoRecyclerAdapter.addItem(todo);
                     }
@@ -88,7 +87,7 @@ public class TodoListFragment extends Fragment {
                 Log.d("error", t.getMessage());
             }
         });
-//        Todo todo1 = new Todo(0, "!", 3, 4, 0, 50, false);
+//        Todo todo1 = new Todo(0, "!", 3, 4, 100, 50, false);
 //        todoRecyclerAdapter.addItem(todo1);
 //        todoRecyclerAdapter.notifyDataSetChanged();
 
