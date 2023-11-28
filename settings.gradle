@@ -1,2 +1,16 @@
-project(':build.gradle').projectDir = new File(rootDir, 'JustDoIt/build.gradle')
-include ':build.gradle'
+pluginManagement {
+    repositories {
+        google()
+        mavenCentral()
+        gradlePluginPortal()
+    }
+}
+dependencyResolutionManagement {
+    repositoriesMode.set(RepositoriesMode.FAIL_ON_PROJECT_REPOS)
+    repositories {
+        google()
+        mavenCentral()
+    }
+}
+rootProject.name = "JustDoIt"
+include ':app'
