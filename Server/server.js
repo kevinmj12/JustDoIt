@@ -19,7 +19,7 @@ app.get('/', function(req, res){
 });
 
 
-// ?��???�? To-DO 리턴
+// 유저별 To-DO 리턴
 app.get("/todo/1", (req, res) =>{
     db.query(`SELECT * FROM todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
@@ -28,21 +28,9 @@ app.get("/todo/1", (req, res) =>{
         }
         console.log(result);
         res.json(result);
-    })
-    res.json({
-        "todo": [
-            {
-                "todo_id": 1,
-                "user_id": 1,
-                "todo_name": "?��?��?��",
-                "todo_date": "2020-11-11",
-                "todo_time": "12:00",
-                "todo_memo": "?��?��?��?�� ?��?��?��?��?�� ?��?��",
-                "todo_status": 0
-            }]
-});})
+    })})
 
-// ?��???�? Daily To-DO 리턴
+// 유저별 Daily To-DO 리턴
 app.get("/dailytodo/:user_id", (req, res) =>{
     db.query(`SELECT * FROM daily_todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
@@ -53,6 +41,22 @@ app.get("/dailytodo/:user_id", (req, res) =>{
         res.json(result);
     })
 })
+
+// 회원가입
+app.post("/signup", (req, res) => {
+    db.query(`INSERT INTO user_info(user_name, user_id, user_pw, user_birthday, user_email) VALUES ('cheolsu', 'abc123','abc2134' , '2000-01-01', 'abc@abc.com');`,
+        function (error, result) {
+            if (error) {
+                console.log(error);
+                res.send(error.code);
+            
+            } else {
+                res.json({ msg: "success" });
+            }
+        }
+    );
+    console.log(req.body);
+});
 
 
 app.listen(port, () => {
