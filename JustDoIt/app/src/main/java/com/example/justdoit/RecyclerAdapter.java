@@ -5,9 +5,12 @@ import android.content.SharedPreferences;
 import android.util.Log;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
+import android.widget.PopupMenu;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +31,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
     String userId;
     //    Context context;
     Context context;
+    ImageButton pop_up_menu;
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -40,15 +44,27 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
             todoName = view.findViewById(R.id.todo_name);
             todoDeadline = view.findViewById(R.id.todo_deadline);
             todoProgress = view.findViewById(R.id.todo_progress);
+            pop_up_menu = view.findViewById(R.id.pop_up_menu);
+            pop_up_menu.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    PopupMenu popupMenu = new PopupMenu(v.getContext(),v);
+                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+                        @Override
+                        public boolean onMenuItemClick(MenuItem item){
+                            return false;
+                        }
+                    });
+                    popupMenu.inflate(R.menu.popup_menu);
+                    popupMenu.show();
+                }
+            });
         }
 
         void onBind(Todo todo){
             todoName.setText(todo.getName());
             todoDeadline.setText(Integer.toString(todo.getDeadlineMonth())+"월 "+ Integer.toString(todo.getDeadlineDate())+"일");
             todoProgress.setText(Integer.toString(todo.getPercentProgress())+"%");
-//            image.setImageResource(crowdData.getImage());
-//            textviewName.setText(crowdData.getName());
-//            textviewIntroduction.setText(crowdData.getIntroduction());
         }
     }
     void addItem(Todo todo) {

@@ -20,7 +20,7 @@ app.get('/', function(req, res){
 
 
 // 유저별 To-DO 리턴
-app.get("/todo/:user_id", (req, res) =>{
+app.get("/todo/1", (req, res) =>{
     db.query(`SELECT * FROM todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
             console.log("error");
