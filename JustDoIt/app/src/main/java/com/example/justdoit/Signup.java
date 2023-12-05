@@ -7,12 +7,23 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.Volley;
+import org.json.JSONException;
+import org.json.JSONObject;
+import java.util.HashMap;
+import java.util.Map;
+
 import androidx.appcompat.app.AppCompatActivity;
 
 public class Signup extends AppCompatActivity {
     TextView back;
     EditText name,id,pw,pw2,email,birthyear,birthdate,birthday;
     Button pwcheck, submit;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +53,49 @@ public class Signup extends AppCompatActivity {
                 Toast.makeText(Signup.this, "비밀번호가 다릅니다.", Toast.LENGTH_LONG).show();
             }
         });
-
         //회원가입 완료 버튼
         submit = findViewById(R.id.signupbutton);
-        submit.setOnClickListener(v -> {
-            Intent intent = new Intent(this, Login.class);
-            startActivity(intent);
-        });
+        submit.setOnClickListener(v -> sendSignupRequest());
+        }
+    private void sendSignupRequest() {
+        String url = "http://10.0.2.2:3123/signup";
+
+        // 사용자 입력 데이터 가져오기
+        String userName = name.getText().toString();
+        String userId = id.getText().toString();
+        String userPw = pw.getText().toString();
+        String userEmail = email.getText().toString();
+        String userBirthday = birthyear.getText().toString() + "-" + birthdate.getText().toString() + "-" + birthday.getText().toString();
+
+        // JSON으로 파일 만들기
+        JSONObject parameters = new JSONObject();
+        try {
+            parameters.put("user_name", userName);
+            parameters.put("user_id", userId);
+            parameters.put("user_pw", userPw);
+            parameters.put("user_birthday", userBirthday);
+            parameters.put("user_email", userEmail);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        // POST 요청 생성
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, parameters,
+                response -> {
+                    Toast.makeText(Signup.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
+                    Intent intent = new Intent(Signup.this, Login.class);
+                    startActivity(intent);
+                },
+                error -> Toast.makeText(Signup.this, "회원가입 실패: " + error.getMessage(), Toast.LENGTH_SHORT).show()) {
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new HashMap<>();
+                headers.put("Content-Type", "application/json");
+                return headers;
+            }
+        };
+        // 요청 큐에 추가
+        RequestQueue requestQueue = Volley.newRequestQueue(this);
+        requestQueue.add(jsonObjectRequest);
     }
 }
