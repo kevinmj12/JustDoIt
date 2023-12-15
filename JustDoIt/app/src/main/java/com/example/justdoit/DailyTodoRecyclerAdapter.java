@@ -21,6 +21,7 @@ public class DailyTodoRecyclerAdapter extends RecyclerView.Adapter<DailyTodoRecy
     private CardView cardTodo;
     ArrayList<DailyTodo> DailyTodoArray = new ArrayList<>();
     TextView todoName;
+    TextView todoDeadline;
     TextView todoProgress;
     String userId;
     Context context;
@@ -35,6 +36,7 @@ public class DailyTodoRecyclerAdapter extends RecyclerView.Adapter<DailyTodoRecy
             // Define click listener for the ViewHolder's View
             cardTodo = view.findViewById(R.id.card_todo);
             todoName = view.findViewById(R.id.todo_name);
+            todoDeadline = view.findViewById(R.id.todo_deadline);
             todoProgress = view.findViewById(R.id.todo_progress);
             pop_up_menu = view.findViewById(R.id.pop_up_menu);
             pop_up_menu.setOnClickListener(new View.OnClickListener() {
@@ -55,6 +57,7 @@ public class DailyTodoRecyclerAdapter extends RecyclerView.Adapter<DailyTodoRecy
 
         void onBind(DailyTodo dailyTodo){
             todoName.setText(dailyTodo.getName());
+            todoDeadline.setText("");
             todoProgress.setText(Integer.toString(dailyTodo.getPresentProgress())+"%");
         }
     }

@@ -38,6 +38,7 @@ public class DailyTodoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_daily_todo_list, container, false);
+        int user_id = 123;
 
         dailyTodoArrayList = new ArrayList<>();
         linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
@@ -52,7 +53,7 @@ public class DailyTodoListFragment extends Fragment {
         dailyTodoRecyclerAdapter = new DailyTodoRecyclerAdapter(dailyTodoArrayList, getContext());
         dailyTodoRecyclerView.setAdapter(dailyTodoRecyclerAdapter);
 
-        Call<List<DailyTodoModel>> call = RetrofitClient.getApiService().getDailyTodo(1);
+        Call<List<DailyTodoModel>> call = RetrofitClient.getApiService().getDailyTodo(user_id);
         call.enqueue(new Callback<List<DailyTodoModel>>() {
             @Override
             public void onResponse(Call<List<DailyTodoModel>> call, Response<List<DailyTodoModel>> response) {
@@ -75,7 +76,6 @@ public class DailyTodoListFragment extends Fragment {
                 Log.d("error", t.getMessage());
             }
         });
-
 
         return v;
     }
