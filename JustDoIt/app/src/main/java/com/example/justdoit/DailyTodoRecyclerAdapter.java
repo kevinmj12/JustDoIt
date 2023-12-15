@@ -66,8 +66,8 @@ public class DailyTodoRecyclerAdapter extends RecyclerView.Adapter<DailyTodoRecy
         DailyTodoArray.add(dailyTodo);
     }
 
-    public DailyTodoRecyclerAdapter(ArrayList<DailyTodo> CrowdDataArray, Context context) {
-        this.DailyTodoArray = CrowdDataArray;
+    public DailyTodoRecyclerAdapter(ArrayList<DailyTodo> DailyTodoDataArray, Context context) {
+        this.DailyTodoArray = DailyTodoDataArray;
         this.context = context;
     }
 
