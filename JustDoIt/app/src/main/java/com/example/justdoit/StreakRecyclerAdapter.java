@@ -2,11 +2,8 @@ package com.example.justdoit;
 
 import android.content.Context;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.PopupMenu;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,25 +16,26 @@ import java.util.ArrayList;
 public class StreakRecyclerAdapter extends RecyclerView.Adapter<StreakRecyclerAdapter.ViewHolder> {
 
     private CardView cardStreak;
-    ArrayList<DailyTodo> DailyTodoArray = new ArrayList<>();
+    ArrayList<DailyTodo> StreakDailyTodoArray = new ArrayList<>();
     TextView todoName;
+    TextView todoStartDate;
     TextView todoStreak;
     Context context;
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
-
-
         ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             cardStreak = view.findViewById(R.id.card_streak);
-            todoName = view.findViewById(R.id.streak_todo_name;
+            todoName = view.findViewById(R.id.streak_todo_name);
+            todoStartDate = view.findViewById(R.id.streak_start_date);
             todoStreak = view.findViewById(R.id.streak_streak);
         }
 
         void onBind(DailyTodo dailyTodo){
             todoName.setText(dailyTodo.getName());
+            todoStreak.setText("시작일: " + todoStartDate);
             String streak = dailyTodo.getStreak();
             String _streak = "";
             for (int i = 0;  i < 10; i++){
@@ -53,11 +51,11 @@ public class StreakRecyclerAdapter extends RecyclerView.Adapter<StreakRecyclerAd
     }
     void addItem(DailyTodo dailyTodo) {
         // 외부에서 item을 추가시킬 함수입니다.
-        DailyTodoArray.add(dailyTodo);
+        StreakDailyTodoArray.add(dailyTodo);
     }
 
-    public DailyTodoRecyclerAdapter(ArrayList<DailyTodo> DailyTodoDataArray, Context context) {
-        this.DailyTodoArray = DailyTodoDataArray;
+    public StreakRecyclerAdapter(ArrayList<DailyTodo> StreakDailyTodoDataArray, Context context) {
+        this.StreakDailyTodoArray = StreakDailyTodoDataArray;
         this.context = context;
     }
 
@@ -65,7 +63,7 @@ public class StreakRecyclerAdapter extends RecyclerView.Adapter<StreakRecyclerAd
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {
         // Create a new view, which defines the UI of the list item
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_todo, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_streak, viewGroup, false);
 
         return new ViewHolder(view);
     }
@@ -76,12 +74,12 @@ public class StreakRecyclerAdapter extends RecyclerView.Adapter<StreakRecyclerAd
 
         // Get element from your dataset at this position and replace the
         // contents of the view with that element
-        viewHolder.onBind(DailyTodoArray.get(position));
+        viewHolder.onBind(StreakDailyTodoArray.get(position));
     }
 
     // Return the size of your dataset (invoked by the layout manager)
     @Override
     public int getItemCount() {
-        return DailyTodoArray.size();
+        return StreakDailyTodoArray.size();
     }
 }
