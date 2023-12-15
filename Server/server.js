@@ -18,7 +18,7 @@ app.use(session({
 var db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "pjpj5027!!",
+    password: "jacob9897!",
     database: "justdoit",
     port: "3306",
 })
