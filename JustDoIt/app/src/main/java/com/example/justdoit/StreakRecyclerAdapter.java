@@ -16,16 +16,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-public class DailyTodoRecyclerAdapter extends RecyclerView.Adapter<DailyTodoRecyclerAdapter.ViewHolder> {
+public class StreakRecyclerAdapter extends RecyclerView.Adapter<StreakRecyclerAdapter.ViewHolder> {
 
-    private CardView cardTodo;
+    private CardView cardStreak;
     ArrayList<DailyTodo> DailyTodoArray = new ArrayList<>();
     TextView todoName;
-    TextView todoDeadline;
-    TextView todoProgress;
-    String userId;
+    TextView todoStreak;
     Context context;
-    ImageButton pop_up_menu;
 
 
     class ViewHolder extends RecyclerView.ViewHolder {
@@ -34,31 +31,24 @@ public class DailyTodoRecyclerAdapter extends RecyclerView.Adapter<DailyTodoRecy
         ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            cardTodo = view.findViewById(R.id.card_todo);
-            todoName = view.findViewById(R.id.todo_name);
-            todoDeadline = view.findViewById(R.id.todo_deadline);
-            todoProgress = view.findViewById(R.id.todo_progress);
-            pop_up_menu = view.findViewById(R.id.pop_up_menu);
-            pop_up_menu.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    PopupMenu popupMenu = new PopupMenu(v.getContext(),v);
-                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
-                        @Override
-                        public boolean onMenuItemClick(MenuItem item){
-                            return false;
-                        }
-                    });
-                    popupMenu.inflate(R.menu.popup_menu);
-                    popupMenu.show();
-                }
-            });
+            cardStreak = view.findViewById(R.id.card_streak);
+            todoName = view.findViewById(R.id.streak_todo_name;
+            todoStreak = view.findViewById(R.id.streak_streak);
         }
 
         void onBind(DailyTodo dailyTodo){
             todoName.setText(dailyTodo.getName());
-            todoDeadline.setText("");
-            todoProgress.setText(Integer.toString(dailyTodo.getPresentProgress())+"%");
+            String streak = dailyTodo.getStreak();
+            String _streak = "";
+            for (int i = 0;  i < 10; i++){
+                if (streak.charAt(i) == 'X'){
+                    _streak += '□';
+                }
+                else{
+                    _streak += '■';
+                }
+            }
+            todoStreak.setText(_streak);
         }
     }
     void addItem(DailyTodo dailyTodo) {

@@ -67,8 +67,8 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapte
         TodoArray.add(todo);
     }
 
-    public TodoRecyclerAdapter(ArrayList<Todo> CrowdDataArray, Context context) {
-        this.TodoArray = CrowdDataArray;
+    public TodoRecyclerAdapter(ArrayList<Todo> TodoDataArray, Context context) {
+        this.TodoArray = TodoDataArray;
         this.context = context;
     }
 
