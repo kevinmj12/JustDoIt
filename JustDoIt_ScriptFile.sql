@@ -18,15 +18,14 @@ CREATE TABLE IF NOT EXISTS todo (
     user_id INT NOT NULL,
     todo_name VARCHAR(50) NOT NULL,
     present_progress INT DEFAULT 0,
-    deadline DATE NOT NULL,
-    FOREIGN KEY (user_id) REFERENCES user_info(id)
+    deadline DATE NOT NULL
 );
 
 CREATE TABLE IF NOT EXISTS daily_todo (
     user_id INT NOT NULL,
     todo_name VARCHAR(50) NOT NULL,
     present_progress INT DEFAULT 0,
-    create_date DATE DEFAULT (CURRENT_DATE),
-    FOREIGN KEY (user_id) REFERENCES user_info(id)
+    start_date DATE DEFAULT (CURRENT_DATE),
+    streak VARCHAR(10) NOT NULL
 );
 

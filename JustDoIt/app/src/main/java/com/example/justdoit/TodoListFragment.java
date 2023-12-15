@@ -41,6 +41,7 @@ public class TodoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_todolist, container, false);
+        int user_id = 123;
 
         todoArrayList = new ArrayList<>();
 
@@ -57,7 +58,7 @@ public class TodoListFragment extends Fragment {
         todoRecyclerView.setAdapter(todoRecyclerAdapter);
 
         // 나중에 로그인 구현이 완료되면 user_id를 받아와 저장하면 됨
-        Call<List<TodoModel>> call = RetrofitClient.getApiService().getTodo(1);
+        Call<List<TodoModel>> call = RetrofitClient.getApiService().getTodo(user_id);
         call.enqueue(new Callback<List<TodoModel>>() {
             @Override
             public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
