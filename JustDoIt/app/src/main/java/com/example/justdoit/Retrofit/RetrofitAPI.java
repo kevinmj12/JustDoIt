@@ -20,6 +20,11 @@ public interface RetrofitAPI {
             @Path("user_id") int user_id
     );
 
+    @GET("/dailytodo/{user_id}")
+    Call<List<DailyTodoModel>> getDailyTodo(
+            @Path("user_id") int user_id
+    );
+
     @FormUrlEncoded
     @POST("/login/")
     Call<Result> login(
