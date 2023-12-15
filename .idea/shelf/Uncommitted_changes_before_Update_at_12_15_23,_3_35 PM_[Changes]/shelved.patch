@@ -1,0 +1,399 @@
+Index: JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>//fragment_make_todo.xml\n//add todo to todo list\npackage com.example.justdoit;\n\nimport android.app.DatePickerDialog;\nimport android.app.Dialog;\nimport android.content.Intent;\nimport android.os.Bundle;\n\nimport androidx.annotation.Nullable;\nimport androidx.fragment.app.DialogFragment;\nimport androidx.fragment.app.Fragment;\n\nimport android.view.LayoutInflater;\nimport android.view.View;\nimport android.view.ViewGroup;\nimport android.widget.Button;\nimport android.widget.DatePicker;\nimport android.widget.EditText;\nimport android.widget.ImageButton;\nimport android.widget.Switch;\nimport android.widget.TextView;\n\nimport java.util.Calendar;\n\npublic class MakeTodoFragment extends Fragment {\n\n    ImageButton createTodo;\n\n    @Override\n    public void onCreate(Bundle savedInstanceState) {\n        super.onCreate(savedInstanceState);\n    }\n    @Override\n    public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {\n        View v = inflater.inflate(R.layout.fragment_make_todo, container, false);\n        //MakeTodoBack버튼 클릭 시 전 페이지로 이동\n        v.findViewById(R.id.MakeTodoBack).setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                Intent intent = new Intent(getActivity(), MainActivity.class);\n                getActivity().startActivity(intent);\n            }\n        });\n        //MakeTodoDone버튼 클릭 시 name, deadlineMonth, deadlineDate, totalProgress, presentProgress, isDailyTodo를 입력받아 TodoListFragment로 전달\n        v.findViewById(R.id.MakeTodoDone).setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                EditText name = (EditText) v.findViewById(R.id.MakeTodoName);\n\n                //DatePickerFragment에서 받아온 deadlineMonth, deadlineDate 저장\n            }\n        });\n        //DatePicker 클릭 시 DatePickerFragment로 이동\n        v.findViewById(R.id.DateTime).setOnClickListener(new View.OnClickListener() {\n            @Override\n            public void onClick(View v) {\n                DialogFragment newFragment = new DatePickerFragment();\n                newFragment.show(getFragmentManager(), \"datePicker\");\n            }\n        });\n        return v;\n\n    }\n}\n\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java b/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java
+--- a/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ b/JustDoIt/app/src/main/java/com/example/justdoit/MakeTodoFragment.java	(date 1702621561544)
+@@ -10,6 +10,7 @@
+ import androidx.annotation.Nullable;
+ import androidx.fragment.app.DialogFragment;
+ import androidx.fragment.app.Fragment;
++import androidx.fragment.app.FragmentManager;
+ 
+ import android.view.LayoutInflater;
+ import android.view.View;
+@@ -21,12 +22,18 @@
+ import android.widget.Switch;
+ import android.widget.TextView;
+ 
++import com.example.justdoit.Retrofit.TodoModel;
++import com.example.justdoit.Retrofit.RetrofitClient;
++
+ import java.util.Calendar;
++import java.util.List;
++
++import retrofit2.Call;
++import retrofit2.Callback;
++import retrofit2.Response;
+ 
+ public class MakeTodoFragment extends Fragment {
+ 
+-    ImageButton createTodo;
+-
+     @Override
+     public void onCreate(Bundle savedInstanceState) {
+         super.onCreate(savedInstanceState);
+@@ -34,21 +41,65 @@
+     @Override
+     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+         View v = inflater.inflate(R.layout.fragment_make_todo, container, false);
++        EditText name1 = (EditText) v.findViewById(R.id.MakeTodoName);
++        Switch switch1 = (Switch) v.findViewById(R.id.IsDailyTodo);
+         //MakeTodoBack버튼 클릭 시 전 페이지로 이동
+         v.findViewById(R.id.MakeTodoBack).setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                Intent intent = new Intent(getActivity(), MainActivity.class);
+-                getActivity().startActivity(intent);
++                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
++                fragmentManager.beginTransaction().remove(MakeTodoFragment.this).commit();
++                fragmentManager.popBackStack();
+             }
+         });
+-        //MakeTodoDone버튼 클릭 시 name, deadlineMonth, deadlineDate, totalProgress, presentProgress, isDailyTodo를 입력받아 TodoListFragment로 전달
++        //MakeTodoDone버튼 클릭 시 name, deadline, presentProgress, isDailyTodo를 입력받아 TodoListFragment로 전달
+         v.findViewById(R.id.MakeTodoDone).setOnClickListener(new View.OnClickListener() {
+             @Override
+             public void onClick(View v) {
+-                EditText name = (EditText) v.findViewById(R.id.MakeTodoName);
+-
+-                //DatePickerFragment에서 받아온 deadlineMonth, deadlineDate 저장
++                String name = name1.getText().toString();
++                String deadline = new DatePickerFragment().deadline;
++                boolean isDailyTodo = switch1.isChecked();
++                //데이터 저장
++                if(isDailyTodo) {
++                    Call<List<TodoModel>> Todo = RetrofitClient.getApiService().createDailyTodo(
++                            1,
++                            name
++                    );
++                    Todo.enqueue(new Callback<List<TodoModel>>() {
++                        @Override
++                        public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
++                            if(response.isSuccessful()) {
++                                List<TodoModel> todo = response.body();
++                            }
++                        }
++                        @Override
++                        public void onFailure(Call<List<TodoModel>> call, Throwable t) {
++                            System.out.println("error");
++                        }
++                    });
++                }else {
++                    Call<List<TodoModel>> Todo = RetrofitClient.getApiService().createTodo(
++                            1,
++                            name,
++                            deadline
++                    );
++                    Todo.enqueue(new Callback<List<TodoModel>>() {
++                        @Override
++                        public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
++                            if(response.isSuccessful()) {
++                                List<TodoModel> todo = response.body();
++                            }
++                        }
++                        @Override
++                        public void onFailure(Call<List<TodoModel>> call, Throwable t) {
++                            System.out.println("error");
++                        }
++                    });
++                }
++                //mainActivity로 이동
++                FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
++                fragmentManager.beginTransaction().remove(MakeTodoFragment.this).commit();
++                fragmentManager.popBackStack();
+             }
+         });
+         //DatePicker 클릭 시 DatePickerFragment로 이동
+@@ -60,7 +111,6 @@
+             }
+         });
+         return v;
+-
+     }
+ }
+ 
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1/shelved.patch
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1/shelved.patch b/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1/shelved.patch
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1/shelved.patch	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ /dev/null	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
+@@ -1,49 +0,0 @@
+-Index: JustDoIt/app/src/main/res/layout/card_todo.xml
+-IDEA additional info:
+-Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+-<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n\n<androidx.cardview.widget.CardView xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:card_view=\"http://schemas.android.com/apk/res-auto\"\n    android:id=\"@+id/card_todo\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"wrap_content\"\n    card_view:cardBackgroundColor=\"#f7f2f3\"\n    >\n\n    <LinearLayout\n        android:layout_width=\"match_parent\"\n        android:layout_height=\"wrap_content\"\n        android:orientation=\"vertical\"\n        >\n\n        <TextView\n            android:id=\"@+id/item_name\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"소아키 프로젝트\"\n            android:textSize=\"30dp\" />\n\n        <LinearLayout\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            >\n            <LinearLayout\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_weight=\"1\"\n                >\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:text=\"마감: \"\n                    android:textSize=\"20dp\"/>\n\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:text=\"11월 20일\"\n                    android:textSize=\"20dp\" />\n            </LinearLayout>\n\n            <LinearLayout\n                android:layout_width=\"wrap_content\"\n                android:layout_height=\"wrap_content\"\n                android:layout_weight=\"1\">\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:text=\"진행도: \"\n                    android:textSize=\"20dp\"/>\n\n                <TextView\n                    android:layout_width=\"wrap_content\"\n                    android:layout_height=\"wrap_content\"\n                    android:text=\"50%\"\n                    android:textSize=\"20dp\" />\n\n            </LinearLayout>\n\n        </LinearLayout>\n\n    </LinearLayout>\n\n</androidx.cardview.widget.CardView>
+-Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+-<+>UTF-8
+-===================================================================
+-diff --git a/JustDoIt/app/src/main/res/layout/card_todo.xml b/JustDoIt/app/src/main/res/layout/card_todo.xml
+---- a/JustDoIt/app/src/main/res/layout/card_todo.xml	
+-+++ b/JustDoIt/app/src/main/res/layout/card_todo.xml	
+-@@ -14,13 +14,32 @@
+-         android:orientation="vertical"
+-         >
+- 
+--        <TextView
+--            android:id="@+id/item_name"
+--            android:layout_width="wrap_content"
+--            android:layout_height="wrap_content"
+--            android:text="소아키 프로젝트"
+--            android:textSize="30dp" />
+-+        <LinearLayout
+-+            android:layout_width="match_parent"
+-+            android:layout_height="match_parent"
+-+            android:orientation="horizontal">
+-+
+-+            <TextView
+-+                android:id="@+id/item_name"
+-+                android:layout_width="wrap_content"
+-+                android:layout_height="wrap_content"
+-+                android:text="소아키 프로젝트"
+-+                android:textSize="30dp" />
+- 
+-+            <Space
+-+                android:layout_width="170dp"
+-+                android:layout_height="match_parent" />
+-+
+-+            <ImageButton
+-+                android:id="@+id/imageButton3"
+-+                android:layout_width="40dp"
+-+                android:layout_height="40dp"
+-+                android:padding="0dp"
+-+                android:scaleType="centerCrop"
+-+                card_view:srcCompat="@drawable/pngwing_com_2" />
+-+
+-+        </LinearLayout>
+-+
+-         <LinearLayout
+-             android:layout_width="match_parent"
+-             android:layout_height="wrap_content"
+Index: .idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23__8_44PM__Changes_1.xml
+===================================================================
+diff --git a/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23__8_44PM__Changes_1.xml b/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23__8_44PM__Changes_1.xml
+deleted file mode 100644
+--- a/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23__8_44PM__Changes_1.xml	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ /dev/null	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
+@@ -1,4 +0,0 @@
+-<changelist name="Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1" date="1701085502056" recycled="true" deleted="true">
+-  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_11_27_23,_8_44 PM_[Changes]1/shelved.patch" />
+-  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 11/27/23, 8:44 PM [Changes]" />
+-</changelist>
+\ No newline at end of file
+Index: JustDoIt/app/src/main/java/com/example/justdoit/RecyclerAdapter.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.justdoit;\n\nimport android.content.Context;\nimport android.content.SharedPreferences;\nimport android.util.Log;\nimport android.content.Intent;\nimport android.view.LayoutInflater;\nimport android.view.MenuItem;\nimport android.view.View;\nimport android.view.ViewGroup;\nimport android.widget.Button;\nimport android.widget.ImageButton;\nimport android.widget.PopupMenu;\nimport android.widget.TextView;\nimport android.widget.Toast;\n\nimport androidx.annotation.NonNull;\nimport androidx.cardview.widget.CardView;\nimport androidx.recyclerview.widget.RecyclerView;\n\nimport java.util.ArrayList;\n\n\npublic class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {\n\n    private CardView cardTodo;\n    ArrayList<Todo> TodoArray = new ArrayList<>();\n    TextView todoName;\n    TextView todoDeadline;\n    TextView todoProgress;\n    String userId;\n    //    Context context;\n    Context context;\n    ImageButton pop_up_menu;\n\n\n    class ViewHolder extends RecyclerView.ViewHolder {\n\n\n        ViewHolder(View view) {\n            super(view);\n            // Define click listener for the ViewHolder's View\n            cardTodo = view.findViewById(R.id.card_todo);\n            todoName = view.findViewById(R.id.todo_name);\n            todoDeadline = view.findViewById(R.id.todo_deadline);\n            todoProgress = view.findViewById(R.id.todo_progress);\n            pop_up_menu = view.findViewById(R.id.pop_up_menu);\n            pop_up_menu.setOnClickListener(new View.OnClickListener() {\n                @Override\n                public void onClick(View v) {\n                    PopupMenu popupMenu = new PopupMenu(v.getContext(),v);\n                    popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){\n                        @Override\n                        public boolean onMenuItemClick(MenuItem item){\n                            return false;\n                        }\n                    });\n                    popupMenu.inflate(R.menu.popup_menu);\n                    popupMenu.show();\n                }\n            });\n        }\n\n        void onBind(Todo todo){\n            todoName.setText(todo.getName());\n            todoDeadline.setText(Integer.toString(todo.getDeadlineMonth())+\"월 \"+ Integer.toString(todo.getDeadlineDate())+\"일\");\n            todoProgress.setText(Integer.toString(todo.getPercentProgress())+\"%\");\n        }\n    }\n    void addItem(Todo todo) {\n        // 외부에서 item을 추가시킬 함수입니다.\n        TodoArray.add(todo);\n    }\n\n    public RecyclerAdapter(ArrayList<Todo> CrowdDataArray, Context context) {\n        this.TodoArray = CrowdDataArray;\n        this.context = context;\n    }\n\n    // Create new views (invoked by the layout manager)\n    @Override\n    public ViewHolder onCreateViewHolder(ViewGroup viewGroup, int viewType) {\n        // Create a new view, which defines the UI of the list item\n        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.card_todo, viewGroup, false);\n\n        return new ViewHolder(view);\n    }\n\n    // Replace the contents of a view (invoked by the layout manager)\n    @Override\n    public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {\n\n        // Get element from your dataset at this position and replace the\n        // contents of the view with that element\n        viewHolder.onBind(TodoArray.get(position));\n        int todoId = TodoArray.get(position).getTodoID();\n\n    }\n\n    // Return the size of your dataset (invoked by the layout manager)\n    @Override\n    public int getItemCount() {\n        return TodoArray.size();\n    }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JustDoIt/app/src/main/java/com/example/justdoit/RecyclerAdapter.java b/JustDoIt/app/src/main/java/com/example/justdoit/RecyclerAdapter.java
+--- a/JustDoIt/app/src/main/java/com/example/justdoit/RecyclerAdapter.java	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ b/JustDoIt/app/src/main/java/com/example/justdoit/RecyclerAdapter.java	(date 1701737318869)
+@@ -18,7 +18,13 @@
+ import androidx.cardview.widget.CardView;
+ import androidx.recyclerview.widget.RecyclerView;
+ 
++import com.example.justdoit.Retrofit.RetrofitClient;
++import com.example.justdoit.Retrofit.TodoModel;
++
+ import java.util.ArrayList;
++import java.util.List;
++
++import retrofit2.Call;
+ 
+ 
+ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+@@ -52,6 +58,21 @@
+                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
+                         @Override
+                         public boolean onMenuItemClick(MenuItem item){
++                            if(item.getItemId() == R.id.edit) {
++                                //EditTodoFragment.java로 이동
++                                Intent intent = new Intent(v.getContext(), EditTodoFragment.class);
++                                v.getContext().startActivity(intent);
++                            }else if(item.getItemId() == R.id.delete) {
++                                //서버에서 Todo 삭제
++                                Call<List<TodoModel>> call = RetrofitClient.getApiService().DeleteTodo(
++                                        //user_id 받아오기
++                                        1,
++                                        todoName.getText().toString()
++                                );
++                                Toast.makeText(v.getContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
++                            }else {
++                                //Todo의 진행도 수정
++                            }
+                             return false;
+                         }
+                     });
+Index: JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/RetrofitAPI.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.justdoit.Retrofit;\n\nimport com.google.gson.annotations.SerializedName;\n\nimport java.util.List;\n\nimport javax.xml.transform.Result;\n\nimport retrofit2.Call;\nimport retrofit2.http.Field;\nimport retrofit2.http.FormUrlEncoded;\nimport retrofit2.http.GET;\nimport retrofit2.http.POST;\nimport retrofit2.http.Path;\nimport retrofit2.http.Query;\n\npublic interface RetrofitAPI {\n    @GET(\"/todo/{user_id}\")\n    Call<List<TodoModel>> getTodo(\n            @Path(\"user_id\") int user_id\n    );\n\n    @FormUrlEncoded\n    @POST(\"/login/\")\n    Call<Result> login(\n            @Field(\"id\") String id,\n            @Field(\"pw\") String pw\n    );\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/RetrofitAPI.java b/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/RetrofitAPI.java
+--- a/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/RetrofitAPI.java	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ b/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/RetrofitAPI.java	(date 1701748265375)
+@@ -7,10 +7,13 @@
+ import javax.xml.transform.Result;
+ 
+ import retrofit2.Call;
++import retrofit2.http.Body;
++import retrofit2.http.DELETE;
+ import retrofit2.http.Field;
+ import retrofit2.http.FormUrlEncoded;
+ import retrofit2.http.GET;
+ import retrofit2.http.POST;
++import retrofit2.http.PUT;
+ import retrofit2.http.Path;
+ import retrofit2.http.Query;
+ 
+@@ -26,4 +29,27 @@
+             @Field("id") String id,
+             @Field("pw") String pw
+     );
++    @POST("/todo/")
++    Call<List<TodoModel>> createTodo(
++            int user_id,
++            String name,
++            String deadline
++    );
++    @POST("/dailyTodo/")
++    Call<List<TodoModel>> createDailyTodo(
++            int user_id,
++            String name
++    );
++    @FormUrlEncoded
++    @PUT("/editTodo/")
++    Call<List<TodoModel>> EditTodo(
++            @Field("user_id") int user_id,
++            @Field("todo_name") String name,
++            @Field("deadline") String deadline
++    );
++    @DELETE("/deleteTodo/")
++    Call<List<TodoModel>> DeleteTodo(
++            @Path("user_id") int user_id,
++            @Path("todo_name") String name
++    );
+ }
+Index: JustDoIt/app/src/main/res/layout/fragment_make_todo.xml
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+><?xml version=\"1.0\" encoding=\"utf-8\"?>\n<androidx.constraintlayout.widget.ConstraintLayout xmlns:android=\"http://schemas.android.com/apk/res/android\"\n    xmlns:tools=\"http://schemas.android.com/tools\"\n    android:layout_width=\"match_parent\"\n    android:layout_height=\"match_parent\">\n\n    <LinearLayout\n        android:layout_width=\"409dp\"\n        android:layout_height=\"729dp\"\n        android:orientation=\"vertical\"\n        tools:layout_editor_absoluteX=\"1dp\"\n        tools:layout_editor_absoluteY=\"1dp\"\n        tools:ignore=\"MissingConstraints\">\n\n        <Button\n            android:id=\"@+id/MakeTodoBack\"\n            android:layout_width=\"wrap_content\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Back\" />\n\n        <TextView\n            android:id=\"@+id/TaskNameView\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"@string/task_name\"\n            android:textSize=\"35sp\"/>\n\n        <EditText\n            android:id=\"@+id/MakeTodoName\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:ems=\"10\"\n            android:inputType=\"text\"\n            android:text=\"@string/name\"\n            android:textSize=\"30sp\"/>\n\n        <TextView\n            android:id=\"@+id/DateTimeView\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"@string/date_time\"\n            android:textSize=\"35sp\"/>\n\n        <Button\n            android:id=\"@+id/DateTime\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"@string/date\" />\n\n        <Switch\n            android:id=\"@+id/MakeTodoIsDailyTodo\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"@string/daily\"\n            android:textSize=\"35sp\"\n            tools:ignore=\"UseSwitchCompatOrMaterialXml\" />\n\n        <Button\n            android:id=\"@+id/MakeTodoDone\"\n            android:layout_width=\"match_parent\"\n            android:layout_height=\"wrap_content\"\n            android:text=\"Done\" />\n\n    </LinearLayout>\n</androidx.constraintlayout.widget.ConstraintLayout>
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JustDoIt/app/src/main/res/layout/fragment_make_todo.xml b/JustDoIt/app/src/main/res/layout/fragment_make_todo.xml
+--- a/JustDoIt/app/src/main/res/layout/fragment_make_todo.xml	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ b/JustDoIt/app/src/main/res/layout/fragment_make_todo.xml	(date 1701611507610)
+@@ -48,7 +48,7 @@
+             android:text="@string/date" />
+ 
+         <Switch
+-            android:id="@+id/MakeTodoIsDailyTodo"
++            android:id="@+id/IsDailyTodo"
+             android:layout_width="match_parent"
+             android:layout_height="wrap_content"
+             android:text="@string/daily"
+Index: JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/TodoModel.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.justdoit.Retrofit;\n\nimport com.google.gson.annotations.Expose;\nimport com.google.gson.annotations.SerializedName;\n\npublic class TodoModel {\n    @SerializedName(\"user_id\")\n    @Expose\n    private int user_id;\n\n    @SerializedName(\"todo_name\")\n    @Expose\n    private String todo_name;\n\n    @SerializedName(\"present_progress\")\n    @Expose\n    private int present_progress;\n\n    @SerializedName(\"deadline\")\n    @Expose\n    private String deadline;\n\n\n    public int getUserId() {\n        return user_id;\n    }\n\n    public String getTodoName(){\n        return todo_name;\n    }\n\n    public int getPresentProgress(){ return present_progress; }\n\n    public String getDeadline(){ return deadline; }\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/TodoModel.java b/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/TodoModel.java
+--- a/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/TodoModel.java	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ b/JustDoIt/app/src/main/java/com/example/justdoit/Retrofit/TodoModel.java	(date 1701622640800)
+@@ -12,10 +12,22 @@
+     @Expose
+     private String todo_name;
+ 
++    @SerializedName("deadline_month")
++    @Expose
++    private int deadline_month;
++
+     @SerializedName("present_progress")
+     @Expose
+     private int present_progress;
+ 
++    @SerializedName("deadline_date")
++    @Expose
++    private int deadline_date;
++
++    @SerializedName("is_daily_todo")
++    @Expose
++    private boolean is_daily_todo;
++
+     @SerializedName("deadline")
+     @Expose
+     private String deadline;
+@@ -29,6 +41,12 @@
+         return todo_name;
+     }
+ 
++    public int getDeadlineMonth(){ return deadline_month; }
++
++    public int getDeadlineDate(){ return deadline_date; }
++
++    public boolean getIsDailyTodo(){ return is_daily_todo; }
++
+     public int getPresentProgress(){ return present_progress; }
+ 
+     public String getDeadline(){ return deadline; }
+Index: JustDoIt/app/src/main/java/com/example/justdoit/DatePickerFragment.java
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>package com.example.justdoit;\n\nimport android.app.DatePickerDialog;\nimport android.app.Dialog;\nimport android.os.Bundle;\nimport android.view.View;\nimport android.widget.DatePicker;\n\nimport androidx.annotation.Nullable;\nimport androidx.fragment.app.DialogFragment;\n\nimport java.util.Calendar;\nimport java.util.zip.Inflater;\n\npublic class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {\n    @Override\n    public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {\n        final Calendar c = Calendar.getInstance();\n        int year = c.get(Calendar.YEAR);\n        int month = c.get(Calendar.MONTH);\n        int date = c.get(Calendar.DATE);\n        return new DatePickerDialog(getActivity(), this, year, month, date);\n    }\n    public void onDateSet(DatePicker datePicker, int yeat, int month, int date) {\n        populateSetDate(yeat, month+1, date);\n    }\n    public void populateSetDate(int year, int month, int date) {\n        //MakeTodoFragment의 deadlineMonth, deadlineDate에 저장\n    }\n\n}\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+diff --git a/JustDoIt/app/src/main/java/com/example/justdoit/DatePickerFragment.java b/JustDoIt/app/src/main/java/com/example/justdoit/DatePickerFragment.java
+--- a/JustDoIt/app/src/main/java/com/example/justdoit/DatePickerFragment.java	(revision 35cd9d7585f931c55547a3bd1c38392370641b6e)
++++ b/JustDoIt/app/src/main/java/com/example/justdoit/DatePickerFragment.java	(date 1701736205370)
+@@ -4,6 +4,7 @@
+ import android.app.Dialog;
+ import android.os.Bundle;
+ import android.view.View;
++import android.widget.Button;
+ import android.widget.DatePicker;
+ 
+ import androidx.annotation.Nullable;
+@@ -13,19 +14,25 @@
+ import java.util.zip.Inflater;
+ 
+ public class DatePickerFragment extends DialogFragment implements DatePickerDialog.OnDateSetListener {
++    public int year;
++    public int month;
++    public int date;
++    public String deadline;
+     @Override
+     public Dialog onCreateDialog(@Nullable Bundle savedInstanceState) {
+         final Calendar c = Calendar.getInstance();
+-        int year = c.get(Calendar.YEAR);
+-        int month = c.get(Calendar.MONTH);
+-        int date = c.get(Calendar.DATE);
++        year = c.get(Calendar.YEAR);
++        month = c.get(Calendar.MONTH);
++        date = c.get(Calendar.DATE);
++        deadline = year + "년" + month + "월 " + date + "일";
+         return new DatePickerDialog(getActivity(), this, year, month, date);
+     }
+     public void onDateSet(DatePicker datePicker, int yeat, int month, int date) {
+         populateSetDate(yeat, month+1, date);
+     }
+     public void populateSetDate(int year, int month, int date) {
+-        //MakeTodoFragment의 deadlineMonth, deadlineDate에 저장
++        //make_todo에 있는 DateTime 버튼에 선택한 날짜를 넣어줌
++        Button dateTime = (Button) getActivity().findViewById(R.id.DateTime);
++        dateTime.setText(year + "년 " + month + "월 " + date + "일");
+     }
+-
+ }
