@@ -58,7 +58,7 @@ public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapte
 
         void onBind(Todo todo){
             todoName.setText(todo.getName());
-            todoDeadline.setText(Integer.toString(todo.getDeadlineMonth())+"월 "+ Integer.toString(todo.getDeadlineDate())+"일");
+            todoDeadline.setText("마감: "+Integer.toString(todo.getDeadlineMonth())+"월 "+ Integer.toString(todo.getDeadlineDate())+"일");
             todoProgress.setText(Integer.toString(todo.getPresentProgress())+"%");
         }
     }
