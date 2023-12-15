@@ -6,27 +6,28 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.DividerItemDecoration;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.justdoit.Retrofit.RetrofitAPI;
+import com.example.justdoit.Retrofit.DailyTodoModel;
 import com.example.justdoit.Retrofit.RetrofitClient;
-import com.example.justdoit.Retrofit.TestModel;
 import com.example.justdoit.Retrofit.TodoModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import retrofit2.Retrofit;
-import retrofit2.http.POST;
-
-import javax.xml.transform.Result;
 
 public class DailyTodoListFragment extends Fragment {
-    TextView testTextView;
+    RecyclerView dailyTodoRecyclerView;
+    DailyTodoRecyclerAdapter dailyTodoRecyclerAdapter;
+    LinearLayoutManager linearLayoutManager;
+    ArrayList<DailyTodo> dailyTodoArrayList;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -38,23 +39,43 @@ public class DailyTodoListFragment extends Fragment {
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_daily_todo_list, container, false);
 
-        testTextView = v.findViewById(R.id.testTextView1);
+        dailyTodoArrayList = new ArrayList<>();
+        linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 
-        Call<List<TodoModel>> call = RetrofitClient.getApiService().getTodo(1);
-        call.enqueue(new Callback<List<TodoModel>>() {
+        dailyTodoRecyclerView = v.findViewById(R.id.dailyTodoRecyclerView);
+        dailyTodoRecyclerView.setLayoutManager(linearLayoutManager);
+
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(dailyTodoRecyclerView.getContext(),
+                linearLayoutManager.getOrientation());
+        dailyTodoRecyclerView.addItemDecoration(dividerItemDecoration);
+
+        dailyTodoRecyclerAdapter = new DailyTodoRecyclerAdapter(dailyTodoArrayList, getContext());
+        dailyTodoRecyclerView.setAdapter(dailyTodoRecyclerAdapter);
+
+        Call<List<DailyTodoModel>> call = RetrofitClient.getApiService().getDailyTodo(1);
+        call.enqueue(new Callback<List<DailyTodoModel>>() {
             @Override
-            public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
+            public void onResponse(Call<List<DailyTodoModel>> call, Response<List<DailyTodoModel>> response) {
                 if (response.isSuccessful()){
-                    List<TodoModel> data = response.body();
-                    testTextView.setText(data.get(0).getTodoName());
+                    List<DailyTodoModel> data = response.body();
+                    for (int i = 0; i < data.size(); i++){
+                        String todoName = data.get(i).getTodoName();
+                        int presentProgress = data.get(i).getPresentProgress();
+                        String streak = data.get(i).getStreak();
+                        String startDate = data.get(i).getStartDate();
+                        DailyTodo dailyTodo = new DailyTodo(todoName, presentProgress, streak, startDate);
+                        dailyTodoRecyclerAdapter.addItem(dailyTodo);
+                    }
+                    dailyTodoRecyclerAdapter.notifyDataSetChanged();
                 }
             }
 
             @Override
-            public void onFailure(Call<List<TodoModel>> call, Throwable t) {
+            public void onFailure(Call<List<DailyTodoModel>> call, Throwable t) {
                 Log.d("error", t.getMessage());
             }
         });
+
 
         return v;
     }

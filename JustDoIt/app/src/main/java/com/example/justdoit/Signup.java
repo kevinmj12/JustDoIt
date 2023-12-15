@@ -84,7 +84,7 @@ public class Signup extends AppCompatActivity {
                 response -> {
                     Toast.makeText(Signup.this, "회원가입 성공", Toast.LENGTH_SHORT).show();
                     Intent intent = new Intent(Signup.this, Login.class);
-                    startActivity(intent);
+                    finish();
                 },
                 error -> Toast.makeText(Signup.this, "회원가입 실패: " + error.getMessage(), Toast.LENGTH_SHORT).show()) {
             @Override

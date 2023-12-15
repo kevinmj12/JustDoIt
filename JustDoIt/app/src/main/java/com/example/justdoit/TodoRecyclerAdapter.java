@@ -1,18 +1,13 @@
 package com.example.justdoit;
 
 import android.content.Context;
-import android.content.SharedPreferences;
-import android.util.Log;
-import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.PopupMenu;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
@@ -21,7 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.ArrayList;
 
 
-public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
+public class TodoRecyclerAdapter extends RecyclerView.Adapter<TodoRecyclerAdapter.ViewHolder> {
 
     private CardView cardTodo;
     ArrayList<Todo> TodoArray = new ArrayList<>();
@@ -64,7 +59,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         void onBind(Todo todo){
             todoName.setText(todo.getName());
             todoDeadline.setText(Integer.toString(todo.getDeadlineMonth())+"월 "+ Integer.toString(todo.getDeadlineDate())+"일");
-            todoProgress.setText(Integer.toString(todo.getPercentProgress())+"%");
+            todoProgress.setText(Integer.toString(todo.getPresentProgress())+"%");
         }
     }
     void addItem(Todo todo) {
@@ -72,7 +67,7 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
         TodoArray.add(todo);
     }
 
-    public RecyclerAdapter(ArrayList<Todo> CrowdDataArray, Context context) {
+    public TodoRecyclerAdapter(ArrayList<Todo> CrowdDataArray, Context context) {
         this.TodoArray = CrowdDataArray;
         this.context = context;
     }

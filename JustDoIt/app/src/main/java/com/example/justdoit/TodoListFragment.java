@@ -11,8 +11,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.ListView;
 
 import com.example.justdoit.Retrofit.RetrofitClient;
 import com.example.justdoit.Retrofit.TodoModel;
@@ -27,13 +25,12 @@ import retrofit2.Response;
 
 public class TodoListFragment extends Fragment {
     RecyclerView todoRecyclerView;
-    RecyclerView dailyTodoRecyclerView;
-    RecyclerAdapter todoRecyclerAdapter;
-    RecyclerAdapter dailyTodoRecyclerAdapter;
+    TodoRecyclerAdapter todoRecyclerAdapter;
+
     ArrayList<Todo> todoArrayList;
-    ArrayList<Todo> dailyTodoArrayList;
+
     LinearLayoutManager linearLayoutManager;
-    LinearLayoutManager linearLayoutManager2;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -46,7 +43,6 @@ public class TodoListFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_todolist, container, false);
 
         todoArrayList = new ArrayList<>();
-        dailyTodoArrayList = new ArrayList<>();
 
         linearLayoutManager = new LinearLayoutManager(getActivity().getApplicationContext());
 
@@ -57,7 +53,7 @@ public class TodoListFragment extends Fragment {
                 linearLayoutManager.getOrientation());
         todoRecyclerView.addItemDecoration(dividerItemDecoration);
 
-        todoRecyclerAdapter = new RecyclerAdapter(todoArrayList, getContext());
+        todoRecyclerAdapter = new TodoRecyclerAdapter(todoArrayList, getContext());
         todoRecyclerView.setAdapter(todoRecyclerAdapter);
 
         // 나중에 로그인 구현이 완료되면 user_id를 받아와 저장하면 됨

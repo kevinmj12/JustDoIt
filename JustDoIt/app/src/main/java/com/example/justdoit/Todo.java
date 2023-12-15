@@ -4,7 +4,7 @@ public class Todo {
     int todoID;
     String name;
     int deadlineMonth, deadlineDate;
-    int totalProgress, presentProgress;
+    int presentProgress;
     boolean isDailyTodo;
 
     public Todo(int todoID, String name, int deadlineMonth, int deadlineDate, int totalProgress, int presentProgress, boolean isDailyTodo) {
@@ -12,7 +12,6 @@ public class Todo {
         this.name = name;
         this.deadlineMonth = deadlineMonth;
         this.deadlineDate = deadlineDate;
-        this.totalProgress = totalProgress;
         this.presentProgress = presentProgress;
         this.isDailyTodo = isDailyTodo;
     }
@@ -44,20 +43,12 @@ public class Todo {
         this.deadlineDate = deadlineDate;
     }
 
-    public int getTotalProgress() {
-        return totalProgress;
-    }
-    public void setTotalProgress(int totalProgress) {
-        this.totalProgress = totalProgress;
-    }
+
     public int getPresentProgress() {
         return presentProgress;
     }
     public void setPresentProgress(int presentProgress) {
         this.presentProgress = presentProgress;
-    }
-    public int getPercentProgress(){
-        return (presentProgress / totalProgress);
     }
 
     public boolean isDailyTodo() {
