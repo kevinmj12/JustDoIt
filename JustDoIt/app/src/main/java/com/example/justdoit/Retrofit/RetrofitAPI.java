@@ -29,11 +29,23 @@ public interface RetrofitAPI {
             @Field("id") String id,
             @Field("pw") String pw
     );
+    public class PostTodo {
+        @SerializedName("user_id")
+        private int user_id;
+        @SerializedName("name")
+        private String name;
+        @SerializedName("deadline")
+        private String deadline;
+
+        public PostTodo(int user_id, String name, String deadline) {
+            this.user_id = user_id;
+            this.name = name;
+            this.deadline = deadline;
+        }
+    }
     @POST("/todo/")
     Call<List<TodoModel>> createTodo(
-            int user_id,
-            String name,
-            String deadline
+            @Body PostTodo postTodo
     );
     @POST("/daily todo/")
     Call<List<TodoModel>> createDailyTodo(

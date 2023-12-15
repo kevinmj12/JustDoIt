@@ -22,6 +22,7 @@ import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
 
+import com.example.justdoit.Retrofit.RetrofitAPI;
 import com.example.justdoit.Retrofit.TodoModel;
 import com.example.justdoit.Retrofit.RetrofitClient;
 
@@ -79,9 +80,11 @@ public class MakeTodoFragment extends Fragment {
                     });
                 }else {
                     Call<List<TodoModel>> Todo = RetrofitClient.getApiService().createTodo(
-                            1,
-                            name,
-                            deadline
+                            new RetrofitAPI.PostTodo(
+                                    1,
+                                    name,
+                                    deadline
+                            )
                     );
                     Todo.enqueue(new Callback<List<TodoModel>>() {
                         @Override
