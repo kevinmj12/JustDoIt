@@ -18,7 +18,7 @@ app.use(session({
 var db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "pjpj5027!!",
+    password: "jacob9897!",
     database: "justdoit",
     port: "3306",
 })
@@ -83,22 +83,19 @@ app.post("/signup", async (req, res) => {
 });
 
 
-// 로그인
 app.post("/login", (req, res) => {
-    const { user_id, user_pw } = req.body;
+    const { user_name, user_pw } = req.body;
+    console.log("Received login request:", req.body);
 
-    db.query("SELECT * FROM user_info WHERE user_id = ? and user_pw = ?", [user_id, user_pw], function (error, data) {
-        if (error) {
-            console.log(error);
-            return res.status(500).send("Internal Server Error");
-        }
-        if (data.length > 0) {
-            bcrypt.compare(user_pw, data[0].user_pw, (err, data) => {
-                if (err) {
-                    console.log(err);
-                    return res.status(500).send("Internal Server Error");
-                }
-                if (data) {
+    if (user_name && user_pw) {
+        db.query("SELECT * FROM user_info WHERE user_name = ?", [user_name], function (error, results, fields) {
+            if (error) {
+                console.log(error);
+                return res.status(500).send("Internal Server Error");
+            }
+
+            if (results.length > 0) {
+                if (user_pw === results[0].user_pw) {
                     // 로그인 성공 처리
                     req.session.is_logined = true;
                     req.session.user_name = user_name;
@@ -106,11 +103,13 @@ app.post("/login", (req, res) => {
                 } else {
                     res.json({ isLogin: "로그인 정보가 일치하지 않습니다." });
                 }
-            });
-        } else {
-            res.json({ isLogin: "아이디 정보가 일치하지 않습니다." });
-        }
-    });
+            } else {
+                res.json({ isLogin: "아이디 정보가 일치하지 않습니다." });
+            }
+        });
+    } else {
+        res.json({ isLogin: "아이디와 비밀번호를 입력하세요!" });
+    }
 });
 
 
