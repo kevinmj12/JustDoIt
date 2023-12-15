@@ -18,7 +18,13 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.justdoit.Retrofit.RetrofitClient;
+import com.example.justdoit.Retrofit.TodoModel;
+
 import java.util.ArrayList;
+import java.util.List;
+
+import retrofit2.Call;
 
 
 public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHolder> {
@@ -52,6 +58,21 @@ public class RecyclerAdapter extends RecyclerView.Adapter<RecyclerAdapter.ViewHo
                     popupMenu.setOnMenuItemClickListener(new PopupMenu.OnMenuItemClickListener(){
                         @Override
                         public boolean onMenuItemClick(MenuItem item){
+                            if(item.getItemId() == R.id.edit) {
+                                //EditTodoFragment.java로 이동
+                                Intent intent = new Intent(v.getContext(), EditTodoFragment.class);
+                                v.getContext().startActivity(intent);
+                            }else if(item.getItemId() == R.id.delete) {
+                                //서버에서 Todo 삭제
+                                Call<List<TodoModel>> call = RetrofitClient.getApiService().DeleteTodo(
+                                        //user_id 받아오기
+                                        1,
+                                        todoName.getText().toString()
+                                );
+                                Toast.makeText(v.getContext(), "삭제되었습니다.", Toast.LENGTH_SHORT).show();
+                            }else {
+                                //Todo의 진행도 수정
+                            }
                             return false;
                         }
                     });
