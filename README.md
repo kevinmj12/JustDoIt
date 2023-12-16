@@ -1,6 +1,12 @@
 # JustDoIt
 소프트웨어아키텍처 프로젝트
 
+# 소개
+
+# 사용 방법
+
+
+
 사용 방법
 1. MySQL을 열고 서버 연결 후 JustDoIt_ScriptFile.sql을 실행한다.
 2. JustDoIt/Server/server.js에서 MySQL 개인 password를 입력한다.
