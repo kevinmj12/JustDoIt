@@ -39,6 +39,7 @@ public class EditTodoFragment extends Fragment {
 
     EditText name2;
     Switch switch2;
+    Button deadline2;
     DatePickerFragment datePickerFragment;
 
     @Override
@@ -72,6 +73,7 @@ public class EditTodoFragment extends Fragment {
         });
         name2 = (EditText) v.findViewById(R.id.MakeTodoName);
         switch2 = (Switch) v.findViewById(R.id.IsDailyTodo);
+        deadline2 = (Button) v.findViewById(R.id.DateTime);
         //MakeTodoBack버튼 클릭 시 전 페이지로 이동
         v.findViewById(R.id.MakeTodoBack).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,7 +88,7 @@ public class EditTodoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String name = name2.getText().toString();
-                String deadline = new DatePickerFragment().deadline;
+                String deadline = deadline2.getText().toString();
                 boolean isDailyTodo = switch2.isChecked();
                 //데이터 저장
                 if(isDailyTodo) {

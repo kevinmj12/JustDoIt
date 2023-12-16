@@ -45,6 +45,7 @@ public class MakeTodoFragment extends Fragment {
     Call<Result> call;
     EditText name1;
     Switch switch1;
+    Button deadline1;
     DatePickerFragment datePickerFragment;
 
 
@@ -57,6 +58,7 @@ public class MakeTodoFragment extends Fragment {
         View v = inflater.inflate(R.layout.fragment_make_todo, container, false);
         name1 = (EditText) v.findViewById(R.id.MakeTodoName);
         switch1 = (Switch) v.findViewById(R.id.IsDailyTodo);
+        deadline1 = (Button) v.findViewById(R.id.DateTime);
         //MakeTodoBack버튼 클릭 시 전 페이지로 이동
         v.findViewById(R.id.MakeTodoBack).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -71,7 +73,7 @@ public class MakeTodoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String name = name1.getText().toString();
-                String deadline = datePickerFragment.deadline;
+                String deadline = deadline1.getText().toString();
                 boolean isDailyTodo = switch1.isChecked();
                 //데이터 저장
                 if(isDailyTodo) {

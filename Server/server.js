@@ -161,9 +161,7 @@ app.get('/authcheck', (req, res) => {
 app.post("/delete", (req, res) => {
     const { todo_name } = req.body;
     console.log(req.body);
-    var query1 = `set sql_safe_updates = 0;`;
-    var query2 = `DELETE FROM todo WHERE todo_name = ?;`;
-    db.query(query1 + query2, [todo_name], function (error, result) {
+    db.query(`DELETE FROM todo WHERE todo_name = ?;`, [todo_name], function (error, result) {
         if (error) {
             console.log(error);
             res.json({ msg: "error" });
@@ -179,10 +177,8 @@ app.post("/delete", (req, res) => {
 app.post("/edit/todo", (req, res) => {
     const { user_id, todo_name, deadline } = req.body;
     console.log(req.body);
-
-    const query = `UPDATE todo SET deadline = '${deadline}' WHERE user_id = '${user_id}' AND todo_name = '${todo_name}';`;
-
-    db.query(query, function (error, result) {
+    const query = `UPDATE todo SET deadline = ?, todo_name = ? WHERE user_id = ?;`;
+    db.query(query, [deadline, todo_name, user_id], function (error, result) {
         if (error) {
             console.log(error);
             res.json({ msg: "error" });
