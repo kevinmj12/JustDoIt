@@ -41,7 +41,7 @@ public class TodoListFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_todolist, container, false);
-        int user_id = 123;
+        int user_id = 1;
 
         todoArrayList = new ArrayList<>();
 

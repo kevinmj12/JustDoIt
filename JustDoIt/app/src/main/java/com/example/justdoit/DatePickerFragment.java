@@ -24,7 +24,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
         year = c.get(Calendar.YEAR);
         month = c.get(Calendar.MONTH);
         date = c.get(Calendar.DATE);
-        deadline = year + "년" + month + "월 " + date + "일";
+        deadline = year + "-" + month + "-" + date;
         return new DatePickerDialog(getActivity(), this, year, month, date);
     }
     public void onDateSet(DatePicker datePicker, int yeat, int month, int date) {
@@ -33,7 +33,7 @@ public class DatePickerFragment extends DialogFragment implements DatePickerDial
     public void populateSetDate(int year, int month, int date) {
         //make_todo에 있는 DateTime 버튼에 선택한 날짜를 넣어줌
         Button dateTime = (Button) getActivity().findViewById(R.id.DateTime);
-        dateTime.setText(year + "년 " + month + "월 " + date + "일");
+        dateTime.setText(year + "-" + month + "-" + date);
     }
 
 }

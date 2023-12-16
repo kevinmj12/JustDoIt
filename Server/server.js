@@ -5,20 +5,13 @@ const port = 3123;
 const bcrypt = require("bcrypt");
 const session = require('express-session');
 var mysql = require("mysql");
-
-app.use(express.json());
-
-//ì„¸ì…˜ ì„¤ì •
-app.use(session({
-    secret: 'secret_key', // ì„¸ì…˜ì„ ì•”í˜¸í™”í•˜ê¸° ìœ„í•œ ë¹„ë°€í‚¤
-    resave: false,
-    saveUninitialized: true
-}));
+const cors = require("cors");
+const bodyParser = require("body-parser");
 
 var db = mysql.createConnection({
     host: "127.0.0.1",
     user: "root",
-    password: "jacob9897!",
+    password: "sunnylee123",
     database: "justdoit",
     port: "3306",
 })
@@ -26,12 +19,24 @@ var db = mysql.createConnection({
 
 db.connect();
 
+
+app.use(cors());
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// ¼¼¼Ç ¼³Á¤
+app.use(session({
+    secret: 'secret_key', // ¼¼¼ÇÀ» ¾ÏÈ£È­ÇÏ±â À§ÇÑ ºñ¹ÐÅ°
+    resave: false,
+    saveUninitialized: true
+}));
+
 app.get('/', function(req, res){
     res.send("JustDoIt");
 });
 
 
-// ìœ ì €ë³„ To-DO ë¦¬í„´
+// À¯Àúº° To-DO ¸®ÅÏ
 app.get("/todo/:user_id", (req, res) =>{
     db.query(`SELECT * FROM todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
@@ -42,7 +47,7 @@ app.get("/todo/:user_id", (req, res) =>{
         res.json(result);
     })})
 
-// ìœ ì €ë³„ Daily To-DO ë¦¬í„´
+// À¯Àúº° Daily To-DO ¸®ÅÏ
 app.get("/dailytodo/:user_id", (req, res) =>{
     db.query(`SELECT * FROM daily_todo WHERE user_id = ${req.params.user_id}`, function(error, result){
         if (error){
@@ -54,17 +59,34 @@ app.get("/dailytodo/:user_id", (req, res) =>{
     })
 })
 
-// íšŒì›ê°€ìž…
+// To-Do Ãß°¡
+app.post("/create/todo", (req, res) => {
+    const { user_id, todo_name, deadline } = req.body;
+    console.log(req.body);
+
+    const query = `INSERT INTO todo (user_id, todo_name, present_progress, deadline) VALUES ('${user_id}', '${todo_name}', 0, '${deadline}');`;
+
+    db.query(query, function (error, result) {
+        if (error) {
+            console.log(error);
+            res.json({ msg: "error" });
+        } else {
+            res.json({ msg: "success" });
+        }
+    });
+});
+
+// È¸¿ø°¡ÀÔ
 app.post("/signup", async (req, res) => {
     const { user_name, user_id, user_pw, user_birthday, user_email } = req.body;
 
-    // ë¹„ë°€ë²ˆí˜¸ê°€ ì œê³µë˜ì—ˆëŠ”ì§€ í™•ì¸
+    // ºñ¹Ð¹øÈ£°¡ Á¦°øµÇ¾ú´ÂÁö È®ÀÎ
     if (!user_pw) {
-        return res.status(400).send("ë¹„ë°€ë²ˆí˜¸ê°€ ì œê³µë˜ì§€ ì•Šì•˜ìŠµë‹ˆë‹¤.");
+        return res.status(400).send("ºñ¹Ð¹øÈ£°¡ Á¦°øµÇÁö ¾Ê¾Ò½À´Ï´Ù.");
     }
 
     try {
-        //const hashedPassword = await bcrypt.hash(user_pw, 10); // ë¹„ë°€ë²ˆí˜¸ ì•”í˜¸í™”
+        //const hashedPassword = await bcrypt.hash(user_pw, 10); // ºñ¹Ð¹øÈ£ ¾ÏÈ£È­
         db.query("INSERT INTO user_info(user_name, user_id, user_pw, user_birthday, user_email) VALUES (?, ?, ?, ?, ?);",
             [user_name, user_id, user_pw, user_birthday, user_email],
             function (error, result) {
@@ -78,7 +100,7 @@ app.post("/signup", async (req, res) => {
         );
     } catch (err) {
         console.error(err);
-        res.status(500).send("ì„œë²„ ì˜¤ë¥˜");
+        res.status(500).send("¼­¹ö ¿À·ù");
     }
 });
 
@@ -96,24 +118,24 @@ app.post("/login", (req, res) => {
 
             if (results.length > 0) {
                 if (user_pw === results[0].user_pw) {
-                    // ë¡œê·¸ì¸ ì„±ê³µ ì²˜ë¦¬
+                    // ·Î±×ÀÎ ¼º°ø Ã³¸®
                     req.session.is_logined = true;
                     req.session.user_name = user_name;
                     res.json({ isLogin: "True" });
                 } else {
-                    res.json({ isLogin: "ë¡œê·¸ì¸ ì •ë³´ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." });
+                    res.json({ isLogin: "·Î±×ÀÎ Á¤º¸°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù." });
                 }
             } else {
-                res.json({ isLogin: "ì•„ì´ë”” ì •ë³´ê°€ ì¼ì¹˜í•˜ì§€ ì•ŠìŠµë‹ˆë‹¤." });
+                res.json({ isLogin: "¾ÆÀÌµð Á¤º¸°¡ ÀÏÄ¡ÇÏÁö ¾Ê½À´Ï´Ù." });
             }
         });
     } else {
-        res.json({ isLogin: "ì•„ì´ë””ì™€ ë¹„ë°€ë²ˆí˜¸ë¥¼ ìž…ë ¥í•˜ì„¸ìš”!" });
+        res.json({ isLogin: "¾ÆÀÌµð¿Í ºñ¹Ð¹øÈ£¸¦ ÀÔ·ÂÇÏ¼¼¿ä!" });
     }
 });
 
 
-// ë¡œê·¸ì•„ì›ƒ
+// ·Î±×¾Æ¿ô
 app.get('/logout', function (req, res) {
     req.session.destroy(function (err) {
         if(err) {
@@ -124,7 +146,7 @@ app.get('/logout', function (req, res) {
     });
 });
 
-// ë¡œê·¸ì¸ ì²´í¬
+// ·Î±×ÀÎ Ã¼Å©
 app.get('/authcheck', (req, res) => {
     const sendData = { isLogin: "" };
     if (req.session.is_logined) {
@@ -134,6 +156,42 @@ app.get('/authcheck', (req, res) => {
     }
     res.send(sendData);
 })
+
+// To-Do »èÁ¦
+app.post("/delete", (req, res) => {
+    const { todo_name } = req.body;
+    console.log(req.body);
+    var query1 = `set sql_safe_updates = 0;`;
+    var query2 = `DELETE FROM todo WHERE todo_name = ?;`;
+    db.query(query1 + query2, [todo_name], function (error, result) {
+        if (error) {
+            console.log(error);
+            res.json({ msg: "error" });
+        } else {
+            res.json({ msg: "success" });
+        }
+    }
+    );
+}
+);
+
+// To-DO ¼öÁ¤
+app.post("/edit/todo", (req, res) => {
+    const { user_id, todo_name, deadline } = req.body;
+    console.log(req.body);
+
+    const query = `UPDATE todo SET deadline = '${deadline}' WHERE user_id = '${user_id}' AND todo_name = '${todo_name}';`;
+
+    db.query(query, function (error, result) {
+        if (error) {
+            console.log(error);
+            res.json({ msg: "error" });
+        } else {
+            res.json({ msg: "success" });
+        }
+    });
+});
+
 
 app.listen(port, () => {
     console.log(`Connected at ${port}`);

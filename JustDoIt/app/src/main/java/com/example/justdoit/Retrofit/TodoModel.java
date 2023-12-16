@@ -32,4 +32,8 @@ public class TodoModel {
     public int getPresentProgress(){ return present_progress; }
 
     public String getDeadline(){ return deadline; }
+
+    public void setTodoName(String todo_name){ this.todo_name = todo_name; }
+
+    public void setDeadline(String deadline){ this.deadline = deadline; }
 }

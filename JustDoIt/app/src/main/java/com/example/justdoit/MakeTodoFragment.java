@@ -12,6 +12,7 @@ import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,10 +22,15 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.example.justdoit.Retrofit.Result;
 import com.example.justdoit.Retrofit.RetrofitAPI;
 import com.example.justdoit.Retrofit.TodoModel;
 import com.example.justdoit.Retrofit.RetrofitClient;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.Calendar;
 import java.util.List;
@@ -32,8 +38,15 @@ import java.util.List;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 public class MakeTodoFragment extends Fragment {
+    Call<Result> call;
+    EditText name1;
+    Switch switch1;
+    DatePickerFragment datePickerFragment;
+
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,8 +55,8 @@ public class MakeTodoFragment extends Fragment {
     @Override
     public View onCreateView( LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_make_todo, container, false);
-        EditText name1 = (EditText) v.findViewById(R.id.MakeTodoName);
-        Switch switch1 = (Switch) v.findViewById(R.id.IsDailyTodo);
+        name1 = (EditText) v.findViewById(R.id.MakeTodoName);
+        switch1 = (Switch) v.findViewById(R.id.IsDailyTodo);
         //MakeTodoBack버튼 클릭 시 전 페이지로 이동
         v.findViewById(R.id.MakeTodoBack).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -58,47 +71,48 @@ public class MakeTodoFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 String name = name1.getText().toString();
-                String deadline = new DatePickerFragment().deadline;
+                String deadline = datePickerFragment.deadline;
                 boolean isDailyTodo = switch1.isChecked();
                 //데이터 저장
                 if(isDailyTodo) {
-                    Call<List<TodoModel>> Todo = RetrofitClient.getApiService().createDailyTodo(
-                            1,
-                            name
-                    );
-                    Todo.enqueue(new Callback<List<TodoModel>>() {
-                        @Override
-                        public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
-                            if(response.isSuccessful()) {
-                                List<TodoModel> todo = response.body();
-                            }
-                        }
-                        @Override
-                        public void onFailure(Call<List<TodoModel>> call, Throwable t) {
-                            System.out.println("error");
-                        }
-                    });
+//                    Call<TodoModel> Todo = RetrofitClient.getApiService().createDailyTodo(
+//                            1,
+//                            name
+//                    );
+//                    Todo.enqueue(new Callback<TodoModel>() {
+//                        @Override
+//                        public void onResponse(Call<TodoModel> call, Response<TodoModel> response) {
+//                            if(response.isSuccessful()) {
+//                                TodoModel todo = response.body();
+//                            }
+//                        }
+//                        @Override
+//                        public void onFailure(Call<TodoModel> call, Throwable t) {
+//                            System.out.println("error");
+//                        }
+//                    });
                 }else {
-                    Call<List<TodoModel>> Todo = RetrofitClient.getApiService().createTodo(
-                            new RetrofitAPI.PostTodo(
-                                    1,
-                                    name,
-                                    deadline
-                            )
-                    );
-                    Todo.enqueue(new Callback<List<TodoModel>>() {
+                    call = RetrofitClient.getApiService().createTodo("1", name, deadline);
+                    call.enqueue(new Callback<Result>() {
                         @Override
-                        public void onResponse(Call<List<TodoModel>> call, Response<List<TodoModel>> response) {
-                            if(response.isSuccessful()) {
-                                List<TodoModel> todo = response.body();
-                                name1.setText(todo.get(0).getTodoName());
+                        public void onResponse(Call<Result> call, Response<Result> response) {
+                            if (response.code()==200){
+                                Result result = response.body();
+                                if (result.getMsg() == "success"){
+                                    Toast.makeText(getActivity(), "To-Do 추가 완료", Toast.LENGTH_SHORT).show();
+                                }
+                            }
+                            else{
+                                System.out.println(response.code());
                             }
                         }
+
                         @Override
-                        public void onFailure(Call<List<TodoModel>> call, Throwable t) {
-                            System.out.println("error");
+                        public void onFailure(Call<Result> call, Throwable t) {
+                            Log.e("fail", t.getMessage());
                         }
                     });
+
                 }
                 //mainActivity로 이동
                 FragmentManager fragmentManager = getActivity().getSupportFragmentManager();
@@ -110,12 +124,11 @@ public class MakeTodoFragment extends Fragment {
         v.findViewById(R.id.DateTime).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                DialogFragment newFragment = new DatePickerFragment();
-                newFragment.show(getFragmentManager(), "datePicker");
+                datePickerFragment = new DatePickerFragment();
+                datePickerFragment.show(getFragmentManager(), "datePicker");
             }
         });
         return v;
 
     }
 }
-

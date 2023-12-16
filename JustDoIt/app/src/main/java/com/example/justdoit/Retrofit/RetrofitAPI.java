@@ -4,8 +4,6 @@ import com.google.gson.annotations.SerializedName;
 
 import java.util.List;
 
-import javax.xml.transform.Result;
-
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
@@ -29,44 +27,36 @@ public interface RetrofitAPI {
     );
 
     @FormUrlEncoded
-    @POST("/login/")
-    Call<Result> login(
-            @Field("id") String id,
-            @Field("pw") String pw
+    @POST("/create/todo")
+    Call<Result> createTodo(
+            @Field("user_id") String user_id,
+            @Field("todo_name") String name,
+            @Field("deadline") String deadline
     );
-    public class PostTodo {
-        @SerializedName("user_id")
-        private int user_id;
-        @SerializedName("name")
-        private String name;
-        @SerializedName("deadline")
-        private String deadline;
 
-        public PostTodo(int user_id, String name, String deadline) {
-            this.user_id = user_id;
-            this.name = name;
-            this.deadline = deadline;
-        }
-    }
-    @POST("/todo/")
-    Call<List<TodoModel>> createTodo(
-            @Body PostTodo postTodo
+    @FormUrlEncoded
+    @POST("/edit/todo")
+    Call<Result> editTodo(
+            @Field("user_id") int user_id,
+            @Field("todo_name") String name,
+            @Field("deadline") String deadline
     );
-    @POST("/daily todo/")
-    Call<List<TodoModel>> createDailyTodo(
+
+    @POST("/dailytodo/")
+    Call<TodoModel> createDailyTodo(
             int user_id,
             String name
     );
     @FormUrlEncoded
     @PUT("/todo/{todo_name}")
-    Call<List<TodoModel>> EditTodo(
-            @Field("user_id") int user_id,
+    Call<Result> EditTodo(
+            @Field("user_id") String user_id,
             @Field("todo_name") String name,
             @Field("deadline") String deadline
     );
-    @DELETE("/todo/{todo_name}")
-    Call<List<TodoModel>> DeleteTodo(
-            @Path("user_id") int user_id,
-            @Path("todo_name") String name
+    @FormUrlEncoded
+    @POST("/delete")
+    Call<Result> DeleteTodo(
+            @Field("todo_name") String todo_name
     );
 }
